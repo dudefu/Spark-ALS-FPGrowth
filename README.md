@@ -6,16 +6,16 @@
 
 ## 输入数据
 存在UserBehaviorData.txt文件中。
-usfvm1223ds,1,pv,1536940800,3
-uhf34sdcfe3,2,pv,1536940800,1
-dsfcds2332f,3,pv,1536940800,7
-vfcv4356fvf,4,pv,1536940800,1
-usfvm1223ds,1,fav,1536940800,1
-dvbgf909gbn,1,pv,1536940800,1
-dsfcds2332f,2,fav,1536940800,1
-vfcv4356fvf,3,pv,1536940800,2
-bvdfv487fer,5,pv,1536940800,1
-usfvm1223ds,1,buy,1536940800,1
+usfvm1223ds,1,pv,1536940800,3 
+uhf34sdcfe3,2,pv,1536940800,1 
+dsfcds2332f,3,pv,1536940800,7 
+vfcv4356fvf,4,pv,1536940800,1 
+usfvm1223ds,1,fav,1536940800,1  
+dvbgf909gbn,1,pv,1536940800,1 
+dsfcds2332f,2,fav,1536940800,1  
+vfcv4356fvf,3,pv,1536940800,2 
+bvdfv487fer,5,pv,1536940800,1 
+usfvm1223ds,1,buy,1536940800,1  
 
 ## 其他说明
 1. 用户浏览次数，统计的是pv（不确定是用pv还是uv，这里代码是用的pv）。
