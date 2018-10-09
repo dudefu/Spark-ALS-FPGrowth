@@ -5,7 +5,7 @@ import org.apache.spark.mllib.recommendation.{ALS, Rating}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
 
-import scala.collection.mutable.{ArrayBuffer, Map}
+import scala.collection.mutable.ArrayBuffer
 
 case class UserActionIndex(user: String, item: Int, action: String, timestamp: String, num: Int, index: Double)
 case class UserAction(user: String, item: Int, action: String, timestamp: String, num: Int)
@@ -43,13 +43,12 @@ object ScalaDemo {
     val indexedDf: DataFrame = new StringIndexer().setInputCol("user").setOutputCol("user_code").fit(dataFrame).transform(dataFrame)
     val actionDFRDD = indexedDf.rdd.collect()
 
-//    println("XIN")
 //    actionDFRDD foreach println
 
     //    indexedDf.rdd.saveAsTextFile("file:///D:/code/data/out")
 
     //构建map，用于存放评分。  key：userId-itemId（字符串拼接），value：评分
-    var countMap: Map[String, Double] = scala.collection.mutable.Map() //新建空map
+    val countMap: scala.collection.mutable.Map[String, Double] = scala.collection.mutable.Map() //新建空map
 
     //所有用户
     val users = actionDFRDD.map { x =>
@@ -58,45 +57,37 @@ object ScalaDemo {
       userId = userId.substring(0, userId.length - 2)
 
       //往map里面添加值
-      var key = userId + "-" + x(1) // 用户序号-商品ID
-    var value = 0.0 // 评分
+      val key = userId + "-" + x(1) // 用户序号-商品ID
+      var value = 0.0 // 评分
       countMap.put(key, value) // map的长度=日志数据的条数
       userId.toInt
     }.distinct
 
-//    println("XIN")
 //    users foreach println
 
     //所有的商品
     val items = actionDFRDD.map(x => x(1).toString.toInt).distinct
 
-//    println("XIN")
 //    items foreach println
 
-//    println("XIN")
 //    countMap foreach println
 
     //用户-商品 笛卡尔积
     val userRdd = sc.makeRDD(users)
     val itemRdd = sc.makeRDD(items)
-
     val userItems = userRdd.cartesian(itemRdd)
-
-
-    val userItemsRel = userItems.collect() //获取所有值
 
     //遍历行为，累计评分
     indexedDf.rdd.collect().map { x =>
 
       //index
-      var index_temp = x(5).toString
-      var index = index_temp.substring(0, index_temp.length - 2)
+      val index_temp = x(5).toString
+      val index = index_temp.substring(0, index_temp.length - 2)
 
-      var item = x(1) //map的key
-    var action = x(2).toString //行为类型
-    var num = x(4).toString.toInt //行为次数
-
-      var key = index + "-" + item
+      val item = x(1) //map的key
+      val action = x(2).toString //行为类型
+      val num = x(4).toString.toInt //行为次数
+      val key = index + "-" + item
 
       var rate = countMap.getOrElse(key, 0.0) //已有的分值
 
@@ -110,45 +101,38 @@ object ScalaDemo {
       if (ACTION_BUY.equals(action)) {
         rate += RATE_BUY * num
       }
-
       countMap.put(key, rate)
     }
 
-
-//    println("XIN")
 //    println(countMap)
 
     //把评分的map转成RDD
     val ab = ArrayBuffer[Rating]()
     for (a <- countMap) {
-      var key = a._1
-      var value = a._2
+      val key = a._1
+      val value = a._2
 
-      var arr = key.split("-")
-      var userId = arr(0).substring(0, arr.length - 1).toInt
-      var itemId = arr(1).toInt
+      val arr = key.split("-")
+      val userId = arr(0).substring(0, arr.length - 1).toInt
+      val itemId = arr(1).toInt
 
-      var myRating = new Rating(userId, itemId, value)
+      var myRating = Rating(userId, itemId, value)
       ab += myRating
     }
 
-    var ratingRDD = sc.makeRDD(ab)
+    val ratingRDD = sc.makeRDD(ab)
 
     //模型与训练  Build the recommendation model using ALS
     val (rank, iterations, lambda) = (50, 5, 0.01)
     val model = ALS.train(ratingRDD, rank, iterations, lambda)
 
     // Evaluate the model on rating data
-    val usersProducts = ratingRDD.map { case Rating(user, product, rate) =>
-      (user, product)
-    }
     val predictions =
       model.predict(userItems).map { case Rating(user, product, rate) =>
         ((user, product), rate)
       }
 
 //    预测结果
-//    println("XIN")
     predictions foreach println
 //    ((1,986),2.9963685354079486)
 //    ((1,1402),-0.12304401882570264)
@@ -161,30 +145,16 @@ object ScalaDemo {
     }.join(predictions)// ((4,1690),(3.0,2.996368536647455))
 
     val MSE = ratesAndPreds.map { case ((user, product), (r1, r2)) =>
-      val err = (r1 - r2)
-      err * err
+      math.pow(r1 - r2,2) // 差的平方
     }.mean()
 
-//    println("XIN")
-//    println(s"Mean Squared Error = $MSE")
-
-    // 查看某个用户对某个商品的评分
-//    va1 userPred1 = model.predict(1,986)
-//    println(userPred1)
-
-    // TODO 发现推荐指数很高的商品
-    // 取出评分较高的商品
+    println(s"Mean Squared Error = $MSE")
 
     val sortedPred = predictions.sortBy(x => x._2, ascending = false ).collect
 
-//    // 确定取前多少，不写逻辑
-//    val itemCount = itemRdd.count()// 商品总个数
-//    val needCount = itemCount * ITEM_PERCENT  // 取多少个
-//    val needItem = sortedPred.take(needCount.toInt)
-
       for ( x <- sortedPred){
-        var (user, item ) = x._1
-        var rate = x._2
+        val (user, item ) = x._1
+        val rate = x._2
         println(user,item,rate)
       }
 
