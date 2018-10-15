@@ -113,7 +113,7 @@ object ScalaDemo {
       val value = a._2
 
       val arr = key.split("-")
-      val userId = arr(0).substring(0, arr.length - 1).toInt
+      val userId = arr(0).toInt
       val itemId = arr(1).toInt
 
       var myRating = Rating(userId, itemId, value)
