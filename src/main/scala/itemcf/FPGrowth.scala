@@ -82,3 +82,75 @@ object FPGrowth {
 //    sc.makeRDD(lst2).repartition(1).saveAsTextFile(path + "-confidence")
   }
 }
+
+/**
+控制台输出说明
+
+原始数据集：
+usfvm1223ds1pv15391008001
+uhf34sdcfe32pv15391008001
+dsfcds2332f6pv15391008002
+vfcv4356fvf8pv15391008001
+usfvm1223ds1pv15391008001
+dvbgf909gbn7pv15391008001
+dsfcds2332f2pv15391008002
+vfcv4356fvf8pv15391008001
+bvdfv487fer2pv15391008003
+usfvm1223ds3pv15391008001
+usfvm1223ds1buy15391008001
+uhf34sdcfe35buy15391008001
+uhf34sdcfe31buy15391008001
+dsfcds2332f3buy15391008002
+vfcv4356fvf5buy15391008001
+usfvm1223ds5buy15391008001
+dvbgf909gbn5buy15391008001
+dsfcds2332f1buy15391008002
+vfcv4356fvf1buy15391008001
+dvbgf909gbn1buy15391008003
+usfvm1223ds2buy15391008001
+usfvm1223ds3buy15391008001
+
+我们只要行为类型是buy的，那么数据只有这些
+
+用户ID    商品ID 行为类型   时间戳   行为次数（浏览了多少次，或者购买了几件，或者收藏了）
+usfvm1223ds1buy15391008001
+uhf34sdcfe35buy15391008001
+uhf34sdcfe31buy15391008001
+dsfcds2332f3buy15391008002
+vfcv4356fvf5buy15391008001
+usfvm1223ds5buy15391008001
+dvbgf909gbn5buy15391008001
+dsfcds2332f1buy15391008002
+vfcv4356fvf1buy15391008001
+dvbgf909gbn1buy15391008003
+usfvm1223ds2buy15391008001
+usfvm1223ds3buy15391008001
+
+在上述数据集中，出现的商品ID分别是：1、5、3、2
+
+被购买过的商品数量是：
+(buyItem,4)
+
+每个用户的购买商品是（购物篮）
+CompactBuffer(5, 1)
+CompactBuffer(1, 5, 2, 3)
+CompactBuffer(5, 1)
+CompactBuffer(5, 1)
+CompactBuffer(3, 1)
+
+购物篮数量
+(orl-count,5)
+
+// setMinSupport 支持度support：项集在总项集里面出现的次数。
+// minConfidence 置信度confidence：包含X的项集中，Y出现的概率。u(X,Y)/u(x)。
+	
+
+达到最小支持度阈值的项集
+[1],5  # 商品1出现5次
+[5],4  # 商品5出现4次
+[5,1],4  # 项集[5,1]出现4次
+
+[5]=> [1],1.0  # 商品5相对于商品1的置信度是1.0
+[1]=> [5],0.8  # 商品1相对于商品5的置信度是0.8
+
+**/
