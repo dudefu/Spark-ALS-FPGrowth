@@ -10,7 +10,7 @@ import scala.collection.mutable.ArrayBuffer
 case class UserActionIndex(user: String, item: Int, action: String, timestamp: String, num: Int, index: Double)
 case class UserAction(user: String, item: Int, action: String, timestamp: String, num: Int)
 
-object ScalaDemo {
+object ALSDemo {
 
   val ACTION_PV: String = "pv"
   val ACTION_FAV: String = "fav"
