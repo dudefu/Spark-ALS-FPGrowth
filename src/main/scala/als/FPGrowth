@@ -12,7 +12,6 @@ case class UserAction(user: String, item: Int, action: String, timestamp: String
 object FPGrowth {
 
   val ITEM_COUNT: Int = 1 // 大于这个数量
-  val FIRST_COUNT: Int = 3 // 大于这个数量
   val path = "D:/10.1-10.11/fpg/3"
 
   def main(args: Array[String]): Unit = {
