@@ -115,3 +115,23 @@ Map(4-1 -> 1.0, 1-4 -> 1.0, 2-3 -> 7.0, 3-5 -> 1.0, 1-3 -> 2.0, 2-2 -> 3.0, 5-2 
 Mean Squared Error = 6.080533743173865E-5
 ```
 
+# FPGrowth
+## 代码输出
+(buyItem,4)   
+
+CompactBuffer(5, 1)   
+CompactBuffer(1, 5, 2, 3)   
+CompactBuffer(5, 1)   
+CompactBuffer(5, 1)   
+CompactBuffer(3, 1)   
+
+(orl-count,5)   
+
+### setMinSupport
+[1],5   
+[5],4   
+[5,1],4   
+
+### minConfidence
+[5]=> [1],1.0   
+[1]=> [5],0.8   
