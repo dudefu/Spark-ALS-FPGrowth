@@ -75,7 +75,6 @@ object ALSDemo {
     //用户-商品 笛卡尔积
     val userRdd = sc.makeRDD(users)
     val itemRdd = sc.makeRDD(items)
-    val userItems = userRdd.cartesian(itemRdd)
 
     //遍历行为，累计评分
     indexedDf.rdd.collect().map { x =>
@@ -127,8 +126,11 @@ object ALSDemo {
     val model = ALS.train(ratingRDD, rank, iterations, lambda)
 
     // Evaluate the model on rating data
+    val usersProducts = ratingRDD.map { case Rating(user, product, rate) =>
+      (user, product)
+    }
     val predictions =
-      model.predict(userItems).map { case Rating(user, product, rate) =>
+      model.predict(usersProducts).map { case Rating(user, product, rate) =>
         ((user, product), rate)
       }
 
@@ -136,9 +138,6 @@ object ALSDemo {
     predictions foreach println
 //    ((1,986),2.9963685354079486)
 //    ((1,1402),-0.12304401882570264)
-//    ((4,986),0.21814732076066246)
-//    ((1,1690),0.218147393238044)
-//    ((4,1402),0.029785994599512974)
 
     val ratesAndPreds = ratingRDD.map { case Rating(user, product, rate) =>
       ((user, product), rate)
@@ -160,29 +159,6 @@ object ALSDemo {
 
 //    (3,1815,9.998900479391585)
 //    (1,986,2.9963685544722414)
-//    (4,1690,2.9963685417944315)
-//    (0,3239,0.9899167003756413)
-//    (2,1402,0.9899166983248724)
-//    (1,1815,0.6242709202296586)
-//    (2,986,0.4484347664725926)
-//    (3,986,0.18900726007135238)
-//    (4,1815,0.17580693760420862)
-//    (1,1402,0.16150188358139383)
-//    (3,1690,0.05322818935220758)
-//    (2,1690,0.024253716199680198)
-//    (4,1402,0.00873487109478574)
-//    (3,3239,-0.013201018620516432)
-//    (2,3239,-0.026183289429579454)
-//    (0,1402,-0.026183297102424216)
-//    (3,1402,-0.07675419294350438)
-//    (1,3239,-0.08918152721477333)
-//    (4,3239,-0.11087113058168335)
-//    (0,1815,-0.1210665014602571)
-//    (1,1690,-0.23261303426205585)
-//    (4,986,-0.23261305139232302)
-//    (0,986,-0.24762625007715783)
-//    (0,1690,-0.3078507312089259)
-//    (2,1815,-0.7039120866471468)
 
   }
 }
