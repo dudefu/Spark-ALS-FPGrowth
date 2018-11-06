@@ -72,9 +72,9 @@ object ALSDemo {
 
 //    countMap foreach println
 
-    //用户-商品 笛卡尔积
-    val userRdd = sc.makeRDD(users)
-    val itemRdd = sc.makeRDD(items)
+    //统计  用户、商品  数量
+//    val userRdd = sc.makeRDD(users)
+//    val itemRdd = sc.makeRDD(items)
 
     //遍历行为，累计评分
     indexedDf.rdd.collect().map { x =>
