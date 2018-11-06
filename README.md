@@ -3,7 +3,7 @@
 1. ALSDemo.scala 旧的版本
 2. ALSRecom.scala 新的版本
 
-上面两个版本，核心代码都是Spark官网上的，区别是输入数据结构不一样。		
+上面两个版本，核心代码都是Spark官网上的，区别是输入数据结构不一样。    
 https://spark.apache.org/docs/latest/mllib-collaborative-filtering.html#collaborative-filtering
 
 
