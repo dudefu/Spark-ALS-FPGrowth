@@ -1,7 +1,7 @@
 # 1.Spark ALS Demo 从行为数据到评分再到预测
 
-ALSDemo.scala 旧的版本
-ALSRecom.scala 新的版本
+1. ALSDemo.scala 旧的版本
+2. ALSRecom.scala 新的版本
 
 ## 字段说明
 用户id,商品id,用户行为类型,时间戳，该行为在这一天的次数
