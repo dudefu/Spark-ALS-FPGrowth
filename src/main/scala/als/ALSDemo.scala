@@ -149,14 +149,7 @@ object ALSDemo {
 
     println(s"Mean Squared Error = $MSE")
 
-    val sortedPred = predictions.sortBy(x => x._2, ascending = false ).collect
-
-      for ( x <- sortedPred){
-        val (user, item ) = x._1
-        val rate = x._2
-        println(user,item,rate)
-      }
-
+    val recommRes = model.recommendProductsForUsers(100) // 给每个用户推荐100个商品
 //    (3,1815,9.998900479391585)
 //    (1,986,2.9963685544722414)
 
