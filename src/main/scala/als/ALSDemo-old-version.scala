@@ -24,9 +24,10 @@ object ALSDemo {
 
   def main(args: Array[String]): Unit = {
 
-    val conf = new SparkConf().setMaster("local[2]").setAppName("als")
+    val conf = new SparkConf().setAppName("als")
+        .setMaster("local[*]") //打包时，这个要注释掉
     val sc = SparkContext.getOrCreate(conf)
-    sc.setLogLevel("ERROR")
+    // sc.setLogLevel("ERROR")
 
     val spark = SparkSession.builder.getOrCreate()
 
