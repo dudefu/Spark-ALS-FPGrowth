@@ -27,7 +27,7 @@ bvdfv487fer,5,pv,1536940800,1
 usfvm1223ds,1,buy,1536940800,1
 ```
 ## 其他说明
-1. 用户浏览次数，统计的是pv（不确定是用pv还是uv，这里代码是用的pv）。
+1. 用户浏览次数，统计的是pv。
 2. 因为ALS算法值接收(userId:Int, itemId:Int, rating:Float)型数据，但是我们的userid是string
 3. 这里用了new StringIndexer().fit(dataFrame).transform(dataFrame)来将string类型的userId转成Int。
 4. 也可以建立一张中间表（用户id和int型id）。
